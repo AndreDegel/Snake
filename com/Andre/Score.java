@@ -1,4 +1,4 @@
-package com.clara;
+package com.Andre;
 
 /** Keeps track of, and display the user's score
  * 
