@@ -193,7 +193,7 @@ public class Snake {
 		}
 
 		//Otherwise, game is still on. Add new head
-		snakeSquares[snakeHeadX][snakeHeadY] = 1; 
+		snakeSquares[snakeHeadX][snakeHeadY] = 1;
 
 		//If snake did not just eat, then remove tail segment
 		//to keep snake the same length.

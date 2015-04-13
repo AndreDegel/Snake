@@ -23,6 +23,7 @@ public class DrawSnakeGamePanel extends JPanel {
 	private Image apple;
 	private Image header;
 	private Image dot;
+	private Image win;
 	
 	DrawSnakeGamePanel(Snake s, Kibble k, Score sc){
 		this.snake = s;
@@ -72,7 +73,11 @@ public class DrawSnakeGamePanel extends JPanel {
 	private void displayGameWon(Graphics g) {
 		// TODO Replace this with something really special!
 		g.clearRect(100,100,350,350);
-		g.drawString("YOU WON SNAKE!!!", 150, 150);
+		//g.drawString("YOU WON SNAKE!!!", 150, 150);
+
+		//Draw the winning image
+		win = getImage("win.png");
+		g.drawImage(win, 100,100,350,350, this);
 		
 	}
 	private void displayGameOver(Graphics g) {
