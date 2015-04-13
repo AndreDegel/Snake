@@ -178,9 +178,22 @@ public class Snake {
 
 		//Does this make snake hit the wall?
 		if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ) {
-			hitWall = true;	
-			SnakeGame.setGameStage(SnakeGame.GAME_OVER);
-			return;
+			//Implement warp walls
+			if (snakeHeadX >= maxX) {
+				snakeHeadX = 0;
+			}
+			else if (snakeHeadX < 0) {
+				snakeHeadX = maxX-1;
+			}
+			else if ( snakeHeadY >= maxY) {
+				snakeHeadY = 0;
+			}
+			else if (snakeHeadY < 0) {
+				snakeHeadY = maxY-1;
+			}
+			//hitWall = true;
+			//SnakeGame.setGameStage(SnakeGame.GAME_OVER);
+			//return;
 		}
 
 		//Does this make the snake eat its tail?
