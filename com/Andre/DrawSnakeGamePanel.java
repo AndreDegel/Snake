@@ -20,10 +20,13 @@ public class DrawSnakeGamePanel extends JPanel {
 	private Kibble kibble;
 	private Score score;
 
+	//Initalize images for game graphics
 	private Image apple;
 	private Image header;
 	private Image dot;
 	private Image win;
+	private Image start;
+	private Image gameOver;
 	
 	DrawSnakeGamePanel(Snake s, Kibble k, Score sc){
 		this.snake = s;
@@ -53,10 +56,14 @@ public class DrawSnakeGamePanel extends JPanel {
         	break;
         } 
         case 2 : {
+			//hide the menue during the game
+			SnakeGame.menu.setVisible(false);
         	displayGame(g);
         	break;
         }
         case 3: {
+			//make the menue visible during game over
+			SnakeGame.menu.setVisible(true);
         	displayGameOver(g);
         	break;
         }
@@ -71,32 +78,25 @@ public class DrawSnakeGamePanel extends JPanel {
     }
 
 	private void displayGameWon(Graphics g) {
-		// TODO Replace this with something really special!
-		g.clearRect(100,100,350,350);
-		//g.drawString("YOU WON SNAKE!!!", 150, 150);
-
 		//Draw the winning image
 		win = getImage("win.png");
 		g.drawImage(win, 100,100,350,350, this);
 		
 	}
 	private void displayGameOver(Graphics g) {
-
-		g.clearRect(100,100,350,350);
-		g.drawString("GAME OVER", 150, 150);
+		// Have the game over screen display an image as well
+		gameOver = getImage("gameOver.jpg");
+		g.drawImage(gameOver, 0, 0, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension, this);
 		
 		String textScore = score.getStringScore();
 		String textHighScore = score.getStringHighScore();
 		String newHighScore = score.newHighScore();
+		g.setColor(Color.RED);
+		g.drawString("SCORE = " + textScore, 150, 400);
 		
-		g.drawString("SCORE = " + textScore, 150, 250);
-		
-		g.drawString("HIGH SCORE = " + textHighScore, 150, 300);
-		g.drawString(newHighScore, 150, 400);
-		
-		g.drawString("press a key to play again", 150, 350);
-		g.drawString("Press q to quit the game",150,400);		
-    			
+		g.drawString("HIGH SCORE = " + textHighScore, 150, 420);
+		g.drawString(newHighScore, 150, 450);
+
 	}
 
 	private void displayGame(Graphics g) {
@@ -113,8 +113,9 @@ public class DrawSnakeGamePanel extends JPanel {
 		int y = kibble.getKibbleY() * SnakeGame.squareSize;
 
 		//Draw the kibble as an apple image
+		//food image is smaller than snake.
 		apple = getImage("apple.png");
-		g.drawImage(apple, x+1, y+1,SnakeGame.squareSize, SnakeGame.squareSize, this);
+		g.drawImage(apple, x+1, y+1,SnakeGame.squareSize-20, SnakeGame.squareSize-20, this);
 	}
 
 	private void displaySnake(Graphics g) {
@@ -135,8 +136,9 @@ public class DrawSnakeGamePanel extends JPanel {
 	}
 
 	private void displayInstructions(Graphics g) {
-        g.drawString("Press any key to begin!",100,200);		
-        g.drawString("Press q to quit the game",100,300);		
+		//Have a nicer start screen with an image
+		start = getImage("startSnake.png");
+		g.drawImage(start, 0, 0, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension, this);
     	}
 
 	//method to get images from the project to use in game

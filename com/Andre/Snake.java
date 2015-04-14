@@ -12,6 +12,11 @@ public class Snake {
 
 	private boolean hitWall = false;
 	private boolean ateTail = false;
+	private boolean hasWarp;
+
+	public void setHasWarp(boolean hasWarp) {
+		this.hasWarp = hasWarp;
+	}
 
 	private int snakeSquares[][];  //represents all of the squares on the screen
 	//NOT pixels!
@@ -178,22 +183,25 @@ public class Snake {
 
 		//Does this make snake hit the wall?
 		if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ) {
-			//Implement warp walls
-			if (snakeHeadX >= maxX) {
-				snakeHeadX = 0;
+			if (hasWarp) {
+				//Implement warp walls
+				if (snakeHeadX >= maxX) {
+					snakeHeadX = 0;
+				} else if (snakeHeadX < 0) {
+					snakeHeadX = maxX - 1;
+				} else if (snakeHeadY >= maxY) {
+					snakeHeadY = 0;
+				} //else if (snakeHeadY < 0) {
+				else {
+					snakeHeadY = maxY - 1;
+				}
 			}
-			else if (snakeHeadX < 0) {
-				snakeHeadX = maxX-1;
+
+			else {
+				hitWall = true;
+				SnakeGame.setGameStage(SnakeGame.GAME_OVER);
+				return;
 			}
-			else if ( snakeHeadY >= maxY) {
-				snakeHeadY = 0;
-			}
-			else if (snakeHeadY < 0) {
-				snakeHeadY = maxY-1;
-			}
-			//hitWall = true;
-			//SnakeGame.setGameStage(SnakeGame.GAME_OVER);
-			//return;
 		}
 
 		//Does this make the snake eat its tail?

@@ -1,6 +1,8 @@
 package com.Andre;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Timer;
 
 import javax.swing.*;
@@ -14,7 +16,11 @@ public class SnakeGame {
 	public static int xSquares ;
 	public static int ySquares ;
 
-	public final static int squareSize = 80;
+	public static int squareSize = 70;	//sqaresize to snake fields: 30=16x16 40=12x12, 50=10x10, 60=8x8, 70=7x7 80=6x6
+
+	public static void setSquareSize(int squareSize) {
+		SnakeGame.squareSize = squareSize;
+	}
 
 	protected static Snake snake ;
 
@@ -38,6 +44,11 @@ public class SnakeGame {
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1  second.
 
+	public static void setClockInterval(long clockInterval) {
+		SnakeGame.clockInterval = clockInterval;
+	}
+
+
 	static JFrame snakeFrame;
 
 	static DrawSnakeGamePanel snakePanel;
@@ -45,14 +56,18 @@ public class SnakeGame {
 	//http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FrameDemoProject/src/components/FrameDemo.java
 	//http://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html
 	static JTextArea scoreViewer;
-	static JMenuBar menue = setJMenueBar();
+	static JMenuBar menu = setJMenuBar();
 
 	private static void createAndShowGUI() {
 		//Create and set up the window.
 		snakeFrame = new JFrame("Snake");
 		snakeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//snakeFrame.setJMenuBar(menue);
+
+		snakeFrame.setJMenuBar(menu);
+
+
+
 		/*scoreViewer = new JTextArea("Score ==>" + score);
 		scoreViewer.setEnabled(false);
 		scoreViewer.setBackground(Color.BLACK);
@@ -84,7 +99,6 @@ public class SnakeGame {
 		snake = new Snake(xSquares, ySquares, squareSize);
 		kibble = new Kibble(snake);
 		score = new Score();
-
 		gameStage = BEFORE_GAME;
 	}
 
@@ -122,84 +136,154 @@ public class SnakeGame {
 		SnakeGame.gameStage = gameStage;
 	}
 
-	public static JMenuBar setJMenueBar() {
+	public static JMenuBar setJMenuBar() {
 
 		JMenuBar menue = new JMenuBar();
 
 		JMenu game = new JMenu("Game");
-		JMenuItem newgame = new JMenuItem("New Game");
+		final JMenuItem newgame = new JMenuItem("New Game");
 		JMenuItem exit = new JMenuItem("Exit");
-		/*newgame.addActionListener(new ActionListener() {
+		newgame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				startNewGame();
+				if (SnakeGame.getGameStage() == SnakeGame.BEFORE_GAME) {
+					//Start the game
+					setGameStage(SnakeGame.DURING_GAME);
+					newGame();
+					snakePanel.repaint();
+				}
+				else {
+					SnakeGame.setGameStage(SnakeGame.DURING_GAME);
+					newGame();
+					snake.reset();
+					Score.resetScore();
+					snakePanel.repaint();
+				}
 			}
 		});
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
-		});*/
+		});
 		game.add(newgame);
 		game.addSeparator();
 		game.add(exit);
 		menue.add(game);
 
-		JMenu type = new JMenu("Type");
-		JMenuItem noMaze = new JMenuItem("No Maze");
-		/*noMaze.addActionListener(new ActionListener() {
+		JMenu type = new JMenu("Warp Walls");
+		JRadioButtonMenuItem rbMenuItem;
+		ButtonGroup group = new ButtonGroup();
+		rbMenuItem = new JRadioButtonMenuItem("On");
+
+		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedGameType = GAME_TYPE.NO_MAZE;
-				startNewGame();
+				snake.setHasWarp(true);
 			}
-		});*/
-		JMenuItem border = new JMenuItem("Border Maze");
-		/*border.addActionListener(new ActionListener() {
+		});
+		group.add(rbMenuItem);
+		type.add(rbMenuItem);
+
+
+		rbMenuItem = new JRadioButtonMenuItem("Off");
+		//set no warp walls as default
+		rbMenuItem.setSelected(true);
+		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedGameType = GAME_TYPE.BORDER;
-				startNewGame();
+				snake.setHasWarp(false);
 			}
-		});*/
-		type.add(noMaze);
-		type.add(border);
+		});
+		group.add(rbMenuItem);
+		type.add(rbMenuItem);
 
 		menue.add(type);
 
-		JMenu level = new JMenu("Level");
-		JMenuItem level1 = new JMenuItem("Level 1");
-		/*level1.addActionListener(new ActionListener() {
+
+		JMenu level = new JMenu("Size");
+		ButtonGroup group2 = new ButtonGroup();
+//TODO: Not correctly working yet, need way to update size correctly
+		rbMenuItem = new JRadioButtonMenuItem("7x7");
+		//have the smallest as default
+		rbMenuItem.setSelected(true);
+		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedSpeed = SNAKE_RUNNING_SPEED_FAST;
-				startNewGame();
+				setSquareSize(70);
 			}
 		});
-		JMenuItem level2 = new JMenuItem("Level 2");
-		level2.addActionListener(new ActionListener() {
+		group2.add(rbMenuItem);
+		level.add(rbMenuItem);
+
+		rbMenuItem = new JRadioButtonMenuItem("10x10");
+		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedSpeed = SNAKE_RUNNING_SPEED_FASTER;
-				startNewGame();
+				setSquareSize(50);
 			}
 		});
-		JMenuItem level3 = new JMenuItem("Level 3");
-		level3.addActionListener(new ActionListener() {
+		group2.add(rbMenuItem);
+		level.add(rbMenuItem);
+
+		rbMenuItem = new JRadioButtonMenuItem("16x16");
+		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				selectedSpeed = SNAKE_RUNNING_SPEED_FASTEST;
-				startNewGame();
+				setSquareSize(30);
+				snake.reset();
 			}
-		});*/
-		level.add(level1);
-		//level.add(level2);
-		//level.add(level3);
+		});
+		group2.add(rbMenuItem);
+		level.add(rbMenuItem);
 
 		menue.add(level);
 
+
+		JMenu speed = new JMenu("Speed");
+		ButtonGroup group3 = new ButtonGroup();
+		rbMenuItem = new JRadioButtonMenuItem("Slow");
+		//have the slowest as default
+		rbMenuItem.setSelected(true);
+		rbMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setClockInterval(500);
+
+			}
+		});
+		group3.add(rbMenuItem);
+		speed.add(rbMenuItem);
+
+		rbMenuItem = new JRadioButtonMenuItem("Medium");
+		rbMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setClockInterval(300);
+			}
+		});
+		group3.add(rbMenuItem);
+		speed.add(rbMenuItem);
+
+		rbMenuItem = new JRadioButtonMenuItem("Fast");
+
+		rbMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setClockInterval(150);
+			}
+		});
+		group3.add(rbMenuItem);
+		speed.add(rbMenuItem);
+		menue.add(speed);
+
 		JMenu help = new JMenu("Help");
 		JMenuItem creator = new JMenuItem("Creator");
-		JMenuItem instruction = new JMenuItem("Instraction");
-		/*creator.addActionListener(new ActionListener() {
+		JMenuItem instruction = new JMenuItem("Instruction");
+		creator.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Author: Abdullah al hasb\nVersion: 1.0.1 \n Blog: http://imhasib.wordpress.com/");
+				JOptionPane.showMessageDialog(null, "Author: Andre Degel\nVersion: 2.0 \n Initial Version: https://github.com/minneapolis-edu/Snake");
 			}
-		});*/
+		});
+		instruction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Welcome to Snake\nTo control the snake use the arrow keys(Up, Down, Left, Right) accordingly\n" +
+						"As the snake finds food, it eats the food, and thereby grows larger.\n" +
+						"The game ends when the snake either moves off the screen or moves into itself.\nThe goal is to make the snake as large as possible before that happens.\n" +
+						"The settings can be changed in the menu bar above before the game or after Game Over,\nto do so just click on the option you want and start a new Game");
+			}
+		});
 
 		help.add(creator);
 		help.add(instruction);
