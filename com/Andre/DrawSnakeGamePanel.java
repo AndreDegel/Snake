@@ -104,7 +104,6 @@ public class DrawSnakeGamePanel extends JPanel {
 		displayKibble(g);	
 	}
 
-
 	private void displayKibble(Graphics g) {
 
 

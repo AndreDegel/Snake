@@ -1,6 +1,5 @@
 package com.Andre;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
@@ -16,8 +15,29 @@ public class SnakeGame {
 	public static int xSquares ;
 	public static int ySquares ;
 
+	public static int getxSquares() {
+		return xSquares;
+	}
+
+	public static void setxSquares() {
+		SnakeGame.xSquares = xPixelMaxDimension / squareSize;
+	}
+
+	public static int getySquares() {
+		return ySquares;
+	}
+
+	public static void setySquares() {
+		SnakeGame.ySquares = yPixelMaxDimension / squareSize;
+	}
+
+	public static int getSquareSize() {
+		return squareSize;
+	}
+
 	public static int squareSize = 70;	//sqaresize to snake fields: 30=16x16 40=12x12, 50=10x10, 60=8x8, 70=7x7 80=6x6
 
+	//Setter to change the size of the snake and the game field
 	public static void setSquareSize(int squareSize) {
 		SnakeGame.squareSize = squareSize;
 	}
@@ -58,9 +78,11 @@ public class SnakeGame {
 	static JTextArea scoreViewer;
 	static JMenuBar menu = setJMenuBar();
 
+
+
 	private static void createAndShowGUI() {
 		//Create and set up the window.
-		snakeFrame = new JFrame("Snake");
+		snakeFrame = new JFrame();
 		snakeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -103,9 +125,13 @@ public class SnakeGame {
 	}
 
 	protected static void newGame() {
+		snake.squareSize = getSquareSize();
+		snake.maxX = getxSquares();
+		snake.maxY = getySquares();
+		snake.setSnakeSquares(new int[getxSquares()][getySquares()]);
 		Timer timer = new Timer();
 		GameClock clockTick = new GameClock(snake, kibble, score, snakePanel);
-		timer.scheduleAtFixedRate(clockTick, 0 , clockInterval);
+		timer.scheduleAtFixedRate(clockTick, 0, clockInterval);
 	}
 
 	public static void main(String[] args) {
@@ -200,13 +226,14 @@ public class SnakeGame {
 
 		JMenu level = new JMenu("Size");
 		ButtonGroup group2 = new ButtonGroup();
-//TODO: Not correctly working yet, need way to update size correctly
 		rbMenuItem = new JRadioButtonMenuItem("7x7");
 		//have the smallest as default
 		rbMenuItem.setSelected(true);
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(70);
+				setxSquares();
+				setySquares();
 			}
 		});
 		group2.add(rbMenuItem);
@@ -216,6 +243,8 @@ public class SnakeGame {
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(50);
+				setxSquares();
+				setySquares();
 			}
 		});
 		group2.add(rbMenuItem);
@@ -225,7 +254,8 @@ public class SnakeGame {
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(30);
-				snake.reset();
+				setxSquares();
+				setySquares();
 			}
 		});
 		group2.add(rbMenuItem);
