@@ -125,14 +125,6 @@ public class SnakeGame {
 	}
 
 	protected static void newGame() {
-		//Since we can change the field size as much as we want, we have to update everytime
-		//the snakefield, also we have to re-move the kibbel to avoid it getting lost
-		//with old coordinates
-		snake.setSquareSize(getSquareSize());
-		snake.setMaxX(getxSquares());
-		snake.setMaxY(getySquares());
-		snake.setSnakeSquares(new int[getxSquares()][getySquares()]);
-		kibble.moveKibble(snake);
 		Timer timer = new Timer();
 		GameClock clockTick = new GameClock(snake, kibble, score, snakePanel);
 		timer.scheduleAtFixedRate(clockTick, 0, clockInterval);
@@ -239,8 +231,7 @@ public class SnakeGame {
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(70);
-				setxSquares();
-				setySquares();
+				updateField();
 			}
 		});
 		group2.add(rbMenuItem);
@@ -250,8 +241,7 @@ public class SnakeGame {
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(50);
-				setxSquares();
-				setySquares();
+				updateField();
 			}
 		});
 		group2.add(rbMenuItem);
@@ -261,8 +251,7 @@ public class SnakeGame {
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setSquareSize(30);
-				setxSquares();
-				setySquares();
+				updateField();
 			}
 		});
 		group2.add(rbMenuItem);
@@ -329,6 +318,19 @@ public class SnakeGame {
 
 		return menue;
 
+	}
+
+	//Method to update the game field.
+	public static void updateField() {
+		//Since we can change the field size as much as we want, we have to update everytime
+		//the snakefield, also we have to re-move the kibbel to avoid it getting lost
+		setxSquares();
+		setySquares();
+		snake.setSquareSize(getSquareSize());
+		snake.setMaxX(getxSquares());
+		snake.setMaxY(getySquares());
+		snake.setSnakeSquares(new int[getxSquares()][getySquares()]);
+		kibble.moveKibble(snake);
 	}
 
 }
