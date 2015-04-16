@@ -38,8 +38,20 @@ public class Snake {
 
 	private int justAteMustGrowThisMuch = 0;
 
-	public int maxX, maxY, squareSize;
+	private int maxX, maxY, squareSize;
 	private int snakeHeadX, snakeHeadY; //store coordinates of head - first segment
+
+	public void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
+	}
+
+	public void setMaxX(int maxX) {
+		this.maxX = maxX;
+	}
+
+	public void setMaxY(int maxY) {
+		this.maxY = maxY;
+	}
 
 	public Snake(int maxX, int maxY, int squareSize){
 		this.maxX = maxX;

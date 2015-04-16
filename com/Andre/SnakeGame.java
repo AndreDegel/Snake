@@ -125,10 +125,14 @@ public class SnakeGame {
 	}
 
 	protected static void newGame() {
-		snake.squareSize = getSquareSize();
-		snake.maxX = getxSquares();
-		snake.maxY = getySquares();
+		//Since we can change the field size as much as we want, we have to update everytime
+		//the snakefield, also we have to re-move the kibbel to avoid it getting lost
+		//with old coordinates
+		snake.setSquareSize(getSquareSize());
+		snake.setMaxX(getxSquares());
+		snake.setMaxY(getySquares());
 		snake.setSnakeSquares(new int[getxSquares()][getySquares()]);
+		kibble.moveKibble(snake);
 		Timer timer = new Timer();
 		GameClock clockTick = new GameClock(snake, kibble, score, snakePanel);
 		timer.scheduleAtFixedRate(clockTick, 0, clockInterval);
@@ -175,6 +179,9 @@ public class SnakeGame {
 					//Start the game
 					setGameStage(SnakeGame.DURING_GAME);
 					newGame();
+					//we have to reset the snake for the initial(1st) game because
+					//the player might have changed the field size.
+					snake.reset();
 					snakePanel.repaint();
 				}
 				else {
