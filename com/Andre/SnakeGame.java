@@ -15,6 +15,8 @@ public class SnakeGame {
 	private static int xSquares ;		//FINDBUGS
 	private static int ySquares ;		//FINDBUGS
 
+	//Getters and setters to change square location and size, which are needed if we want to change the
+	//game fields size without changing the windows size.
 	public static int getxSquares() {
 		return xSquares;
 	}
@@ -35,7 +37,7 @@ public class SnakeGame {
 		return squareSize;
 	}
 
-	private static int squareSize = 70;	//FINDBUGS
+	private static int squareSize = 80;	//FINDBUGS
 
 	//Setter to change the size of the snake and the game field
 	public static void setSquareSize(int squareSize) {
@@ -65,6 +67,7 @@ public class SnakeGame {
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1  second.
 
+	//setter to change the game's speed
 	public static void setClockInterval(long clockInterval) {
 		SnakeGame.clockInterval = clockInterval;
 	}
@@ -77,7 +80,7 @@ public class SnakeGame {
 	//http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FrameDemoProject/src/components/FrameDemo.java
 	//http://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html
 
-
+	//Instantiate a new menu bar using the set method
 	static JMenuBar menu = setJMenuBar();
 
 
@@ -123,6 +126,7 @@ public class SnakeGame {
 		Timer timer = new Timer();
 		GameClock clockTick = new GameClock(snake, kibble, snakePanel);
 		timer.scheduleAtFixedRate(clockTick, 0, clockInterval);
+
 	}
 
 	public static void main(String[] args) {
@@ -147,57 +151,63 @@ public class SnakeGame {
 		SnakeGame.gameStage = gameStage;
 	}
 
+	//Method to create the menu for the game
 	public static JMenuBar setJMenuBar() {
 
 		JMenuBar menue = new JMenuBar();
-
+		//Create the first option field with the items to start a new game or exit the game
 		JMenu game = new JMenu("Game");
 		final JMenuItem newgame = new JMenuItem("New Game");
 		JMenuItem exit = new JMenuItem("Exit");
+		//If the new game item is pressed, start a new game
 		newgame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (SnakeGame.getGameStage() == SnakeGame.BEFORE_GAME) {
 					//Start the game
 					setGameStage(SnakeGame.DURING_GAME);
+					//start a new timer
 					newGame();
 					//we have to reset the snake for the initial(1st) game because
 					//the player might have changed the field size.
 					snake.reset();
+					//If it is not the initial(1st) game reset the score
+					if (SnakeGame.getGameStage() == SnakeGame.DURING_GAME) {
+						Score.resetScore();
+					}
 					snakePanel.repaint();
-				}
-				else {
-					SnakeGame.setGameStage(SnakeGame.DURING_GAME);
-					newGame();
-					snake.reset();
-					Score.resetScore();
-					snakePanel.repaint();
-				}
+
 			}
 		});
+		//If exit is pressed, exit the game
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Runtime.getRuntime().exit(0); 	//FINDBUGS
 			}
 		});
+		//Add everything to the first option and then to the menu
 		game.add(newgame);
+		//put a seperator between the two options for better look
 		game.addSeparator();
 		game.add(exit);
 		menue.add(game);
 
+		//Initialiye the options for the warp walls
 		JMenu type = new JMenu("Warp Walls");
+		//Make them radio buttons and group them together so that just one can be selected
 		JRadioButtonMenuItem rbMenuItem;
 		ButtonGroup group = new ButtonGroup();
 		rbMenuItem = new JRadioButtonMenuItem("On");
-
+		//if the radio button is selected turn the warp walls on bz setting the boolean from the snake game class to true
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				snake.setHasWarp(true);
 			}
 		});
+		//add item to group
 		group.add(rbMenuItem);
+		//add item to option
 		type.add(rbMenuItem);
 
-
+		//same as on button
 		rbMenuItem = new JRadioButtonMenuItem("Off");
 		//set no warp walls as default
 		rbMenuItem.setSelected(true);
@@ -209,23 +219,28 @@ public class SnakeGame {
 		group.add(rbMenuItem);
 		type.add(rbMenuItem);
 
+		//add the option to the menu bar
 		menue.add(type);
 
-
+		//Initialiye a new option for the menu to change the field siye of the game
 		JMenu level = new JMenu("Size");
+		//Here again using grouped radio buttons to just select one at a time
 		ButtonGroup group2 = new ButtonGroup();
-		rbMenuItem = new JRadioButtonMenuItem("7x7");
+		rbMenuItem = new JRadioButtonMenuItem("6x6");
 		//have the smallest as default
 		rbMenuItem.setSelected(true);
+		//add an action listener to change the square siye and call the update method if this item is selected
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setSquareSize(70);
+				setSquareSize(80);
 				updateField();
 			}
 		});
+		//add item to group and to option
 		group2.add(rbMenuItem);
 		level.add(rbMenuItem);
 
+		//Same as befor just decrease the sqaresize further
 		rbMenuItem = new JRadioButtonMenuItem("10x10");
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -236,6 +251,7 @@ public class SnakeGame {
 		group2.add(rbMenuItem);
 		level.add(rbMenuItem);
 
+		//Same as befor just decrease the sqaresize further
 		rbMenuItem = new JRadioButtonMenuItem("16x16");
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -245,15 +261,18 @@ public class SnakeGame {
 		});
 		group2.add(rbMenuItem);
 		level.add(rbMenuItem);
-
+		//add the size option to the menu
 		menue.add(level);
 
-
+		//Initialize the option to change the speed of the game
 		JMenu speed = new JMenu("Speed");
+		//here again grouped radio buttons
 		ButtonGroup group3 = new ButtonGroup();
 		rbMenuItem = new JRadioButtonMenuItem("Slow");
 		//have the slowest as default
 		rbMenuItem.setSelected(true);
+		//If the item is selected set the clock interval that controls the speed
+		//to a half second tick (every half second refresh)
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setClockInterval(500);
@@ -263,7 +282,9 @@ public class SnakeGame {
 		group3.add(rbMenuItem);
 		speed.add(rbMenuItem);
 
+
 		rbMenuItem = new JRadioButtonMenuItem("Medium");
+		//change to about a third of a second
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setClockInterval(300);
@@ -273,7 +294,7 @@ public class SnakeGame {
 		speed.add(rbMenuItem);
 
 		rbMenuItem = new JRadioButtonMenuItem("Fast");
-
+		//change to about a tenth of a second
 		rbMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setClockInterval(150);
@@ -283,6 +304,8 @@ public class SnakeGame {
 		speed.add(rbMenuItem);
 		menue.add(speed);
 
+		//Create a help option to show information about the game
+		//as well as the instructions
 		JMenu help = new JMenu("Help");
 		JMenuItem creator = new JMenuItem("Creator");
 		JMenuItem instruction = new JMenuItem("Instruction");

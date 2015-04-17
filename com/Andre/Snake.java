@@ -4,14 +4,16 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 public class Snake {
-
+	//Initialize the state of directions
 	final static int DIRECTION_UP = 0; 		//FINDBUGS
 	final static int DIRECTION_DOWN = 1;	//FINDBUGS
 	final static int DIRECTION_LEFT = 2;	//FINDBUGS and the next one too
 	final static int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers.
 
+	//Set up control statements to see if snake ate its tale or hit the wall
 	private boolean hitWall = false;
 	private boolean ateTail = false;
+	//Initialize control if warp wals are on or not
 	private boolean hasWarp;
 
 	public void setHasWarp(boolean hasWarp) {
@@ -37,6 +39,7 @@ public class Snake {
 	private int maxX, maxY, squareSize;
 	private int snakeHeadX, snakeHeadY; //store coordinates of head - first segment
 
+	//Setters neccessary for changing field size
 	public void setSquareSize(int squareSize) {
 		this.squareSize = squareSize;
 	}
@@ -196,20 +199,23 @@ public class Snake {
 
 		//Does this make snake hit the wall?
 		if (snakeHeadX >= maxX || snakeHeadX < 0 || snakeHeadY >= maxY || snakeHeadY < 0 ) {
+
 			if (hasWarp) {
 				//Implement warp walls
-				if (snakeHeadX >= maxX) {
-					snakeHeadX = 0;
-				} else if (snakeHeadX < 0) {
-					snakeHeadX = maxX - 1;
-				} else if (snakeHeadY >= maxY) {
-					snakeHeadY = 0;
-				} //else if (snakeHeadY < 0) {
-				else {
-					snakeHeadY = maxY - 1;
+				//If Warp walls are turned on and the snake goes into the wall...
+				if (snakeHeadX >= maxX) { //on the right
+					snakeHeadX = 0;			//it wraps left
+				} else if (snakeHeadX < 0) {	//if it goes left
+					snakeHeadX = maxX - 1;		//it wraps right
+				} else if (snakeHeadY >= maxY) {	//if it goes down
+					snakeHeadY = 0;					//it wraps up
+				}
+				else {							//and if it goes up
+					snakeHeadY = maxY - 1;		//it will wrap from the bottom up
 				}
 			}
 
+			//otherwise we check if the snake hits the wall and if so set the game to game over
 			else {
 				hitWall = true;
 				SnakeGame.setGameStage(SnakeGame.GAME_OVER);
@@ -218,7 +224,6 @@ public class Snake {
 		}
 
 		//Does this make the snake eat its tail?
-
 		if (snakeSquares[snakeHeadX][snakeHeadY] != 0) {
 
 			ateTail = true;

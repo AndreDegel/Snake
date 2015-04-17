@@ -4,7 +4,6 @@ package com.Andre;
 import java.awt.*;
 import java.awt.Image;
 import java.util.LinkedList;
-
 import javax.swing.*;
 
 /** This class responsible for displaying the graphics, so the snake, grid, kibble, instruction text and high score
@@ -33,7 +32,8 @@ public class DrawSnakeGamePanel extends JPanel {
 		this.kibble = k;		//FINDBUGS
 		this.score = sc;		//FINDBUGS
 	}
-	
+
+	//Set up the size of the window
 	public Dimension getPreferredSize() {
         return new Dimension(SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension);
     }
@@ -62,12 +62,13 @@ public class DrawSnakeGamePanel extends JPanel {
         	break;
         }
         case 3: {
-			//make the menue visible during game over
+			//make the menue visible during game over and winning screen
 			SnakeGame.menu.setVisible(true);
         	displayGameOver(g);
         	break;
         }
         case 4: {
+			SnakeGame.menu.setVisible(true);
         	displayGameWon(g);
         	break;
         }
@@ -78,16 +79,19 @@ public class DrawSnakeGamePanel extends JPanel {
     }
 
 	private void displayGameWon(Graphics g) {
-		//Draw the winning image
+		//Draw the winning image and the highscore
+		String textHighScore = score.getStringHighScore();
 		win = getImage("win.png");
-		g.drawImage(win, 100,100,350,350, this);
+		g.drawImage(win, 0, 0, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension, this);
+		g.setColor(Color.BLACK);
+		g.drawString("HIGH SCORE = " + textHighScore, 10, 42);
 		
 	}
 	private void displayGameOver(Graphics g) {
 		// Have the game over screen display an image as well
 		gameOver = getImage("gameOver.jpg");
 		g.drawImage(gameOver, 0, 0, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension, this);
-		
+		// and display the last score and high score
 		String textScore = score.getStringScore();
 		String textHighScore = score.getStringHighScore();
 		String newHighScore = score.newHighScore();
@@ -140,7 +144,7 @@ public class DrawSnakeGamePanel extends JPanel {
 		g.drawImage(start, 0, 0, SnakeGame.xPixelMaxDimension, SnakeGame.yPixelMaxDimension, this);
     	}
 
-	//method to get images from the project to use in game
+	//method to get images from the images folder to use in game
 	private Image getImage(String imagePNG) {
 		Image image;
 		ImageIcon iia = new ImageIcon("images\\" +imagePNG); //FINDBUGS

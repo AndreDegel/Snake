@@ -11,9 +11,7 @@ public class Score {
 	private int highScore = 0;	//FINDBUGS
 	private static int increment = 1;		//FINDBUGS	//how many points for eating a kibble
 	
-	public Score(){
-		//Possible TODO get more points for eating kibbles, the longer the snake gets?
-	}
+	public Score(){}
 	
 	public static void resetScore() {
 		score = 0;	
@@ -33,7 +31,6 @@ public class Score {
 	}
 
 	public String newHighScore() {
-		
 		if (score > highScore) {
 			highScore = score;
 			return "New High Score!!";
