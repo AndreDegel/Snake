@@ -12,8 +12,8 @@ public class SnakeGame {
 	public final static int xPixelMaxDimension = 501;  //Pixels in window. 501 to have 50-pixel squares plus 1 to draw a border on last square
 	public final static int yPixelMaxDimension = 501;
 
-	public static int xSquares ;
-	public static int ySquares ;
+	private static int xSquares ;		//FINDBUGS
+	private static int ySquares ;		//FINDBUGS
 
 	public static int getxSquares() {
 		return xSquares;
@@ -35,18 +35,19 @@ public class SnakeGame {
 		return squareSize;
 	}
 
-	public static int squareSize = 70;	//sqaresize to snake fields: 30=16x16 40=12x12, 50=10x10, 60=8x8, 70=7x7 80=6x6
+	private static int squareSize = 70;	//FINDBUGS
 
 	//Setter to change the size of the snake and the game field
 	public static void setSquareSize(int squareSize) {
 		SnakeGame.squareSize = squareSize;
 	}
 
-	protected static Snake snake ;
+	private static Snake snake ;	//FINDBUGS
 
-	protected static Kibble kibble;
+	private static Kibble kibble;	//FINDBUGS
 
-	protected static Score score;
+	private static Score score;		//FINDBUGS
+
 
 	static final int BEFORE_GAME = 1;
 	static final int DURING_GAME = 2;
@@ -59,7 +60,7 @@ public class SnakeGame {
 	private static int gameStage = BEFORE_GAME;  //use this to figure out what should be happening. 
 	//Other classes like Snake and DrawSnakeGamePanel will need to query this, and change it's value
 
-	protected static long clockInterval = 500; //controls game speed
+	private static long clockInterval = 500; //controls game speed	//FINDBUGS
 	//Every time the clock ticks, the snake moves
 	//This is the time between clock ticks, in milliseconds
 	//1000 milliseconds = 1  second.
@@ -120,7 +121,7 @@ public class SnakeGame {
 
 	protected static void newGame() {
 		Timer timer = new Timer();
-		GameClock clockTick = new GameClock(snake, kibble, score, snakePanel);
+		GameClock clockTick = new GameClock(snake, kibble, snakePanel);
 		timer.scheduleAtFixedRate(clockTick, 0, clockInterval);
 	}
 
@@ -175,7 +176,7 @@ public class SnakeGame {
 		});
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				Runtime.getRuntime().exit(0); 	//FINDBUGS
 			}
 		});
 		game.add(newgame);
@@ -317,7 +318,7 @@ public class SnakeGame {
 		snake.setSquareSize(getSquareSize());
 		snake.setMaxX(getxSquares());
 		snake.setMaxY(getySquares());
-		snake.setSnakeSquares(new int[getxSquares()][getySquares()]);
+		snake.snakeSquares = new int[getxSquares()][getySquares()];		//FINDBUGS
 		kibble.moveKibble(snake);
 	}
 

@@ -14,7 +14,7 @@ import javax.swing.*;
  */
 public class DrawSnakeGamePanel extends JPanel {
 	
-	private static int gameStage = SnakeGame.BEFORE_GAME;  //use this to figure out what to paint
+	private int gameStage = SnakeGame.BEFORE_GAME;  //use this to figure out what to paint
 	
 	private Snake snake;
 	private Kibble kibble;
@@ -29,9 +29,9 @@ public class DrawSnakeGamePanel extends JPanel {
 	private Image gameOver;
 	
 	DrawSnakeGamePanel(Snake s, Kibble k, Score sc){
-		this.snake = s;
-		this.kibble = k;
-		this.score = sc;
+		this.snake = s;			//FINDBUGS
+		this.kibble = k;		//FINDBUGS
+		this.score = sc;		//FINDBUGS
 	}
 	
 	public Dimension getPreferredSize() {
@@ -108,13 +108,13 @@ public class DrawSnakeGamePanel extends JPanel {
 
 
 		//Get the changing kibble coordinates
-		int x = kibble.getKibbleX() * SnakeGame.squareSize;
-		int y = kibble.getKibbleY() * SnakeGame.squareSize;
+		int x = kibble.getKibbleX() * SnakeGame.getSquareSize();	//FINDBUGS
+		int y = kibble.getKibbleY() * SnakeGame.getSquareSize();	//FINDBUGS
 
 		//Draw the kibble as an apple image
 		//food image is smaller than snake.
 		apple = getImage("apple.png");
-		g.drawImage(apple, x+1, y+1,SnakeGame.squareSize-20, SnakeGame.squareSize-20, this);
+		g.drawImage(apple, x+1, y+1, SnakeGame.getSquareSize() -20, SnakeGame.getSquareSize() -20, this);	//FINDBUGS
 	}
 
 	private void displaySnake(Graphics g) {
@@ -123,12 +123,12 @@ public class DrawSnakeGamePanel extends JPanel {
 		Point head = coordinates.pop();
 		//Draw the Snake head as a blue dot image
 		header = getImage("head.png");
-		g.drawImage(header,(int)head.getX(), (int)head.getY(),SnakeGame.squareSize, SnakeGame.squareSize, this);
+		g.drawImage(header,(int)head.getX(), (int)head.getY(), SnakeGame.getSquareSize(), SnakeGame.getSquareSize(), this);	//FINDBUGS
 
 		//Draw rest of snake as green dot images
 		for (Point p : coordinates) {
 			dot = getImage("dot.png");
-			g.drawImage(dot,(int)p.getX(), (int)p.getY(),SnakeGame.squareSize, SnakeGame.squareSize, this);
+			g.drawImage(dot,(int)p.getX(), (int)p.getY(), SnakeGame.getSquareSize(), SnakeGame.getSquareSize(), this);	//FINDBUGS
 
 		}
 
@@ -143,10 +143,10 @@ public class DrawSnakeGamePanel extends JPanel {
 	//method to get images from the project to use in game
 	private Image getImage(String imagePNG) {
 		Image image;
-		ImageIcon iia = new ImageIcon(this.getClass().getResource(imagePNG));
+		ImageIcon iia = new ImageIcon("images\\" +imagePNG); //FINDBUGS
 		image = iia.getImage();
 		return image;
 	}
-    
+
 }
 

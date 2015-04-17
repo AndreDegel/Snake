@@ -18,16 +18,12 @@ public class Snake {
 		this.hasWarp = hasWarp;
 	}
 
-	private int snakeSquares[][];  //represents all of the squares on the screen
+	protected int snakeSquares[][];  //represents all of the squares on the screen	//FINDBUGS
 	//NOT pixels!
 	//A 0 means there is no part of the snake in this square
 	//A non-zero number means part of the snake is in the square
 	//The head of the snake is 1, rest of segments are numbered in order
 
-
-	public void setSnakeSquares(int[][] snakeSquares) {
-		this.snakeSquares = snakeSquares;
-	}
 
 	private int currentHeading;  //Direction snake is going in, ot direction user is telling snake to go
 	private int lastHeading;    //Last confirmed movement of snake. See moveSnake method

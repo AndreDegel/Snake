@@ -29,8 +29,8 @@ public class Kibble {
 				break;
 			}
 			//Generate random kibble location
-			kibbleX = rng.nextInt(SnakeGame.xSquares);
-			kibbleY = rng.nextInt(SnakeGame.ySquares);
+			kibbleX = rng.nextInt(SnakeGame.getxSquares());		//FINDBUGS
+			kibbleY = rng.nextInt(SnakeGame.getySquares());		//FINDBUGS
 			kibbleInSnake = s.isSnakeSegment(kibbleX, kibbleY);
 		}
 		

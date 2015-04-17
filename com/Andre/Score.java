@@ -7,13 +7,11 @@ package com.Andre;
 
 public class Score {
 
-	private static int score;			//FINDBUGS
-	private static int highScore = 0;	//FINDBUGS
-	private static int increment;		//FINDBUGS
+	private static int score = 0;			//FINDBUGS
+	private int highScore = 0;	//FINDBUGS
+	private static int increment = 1;		//FINDBUGS	//how many points for eating a kibble
 	
 	public Score(){
-		score = 0;
-		increment = 1;  //how many points for eating a kibble
 		//Possible TODO get more points for eating kibbles, the longer the snake gets?
 	}
 	
