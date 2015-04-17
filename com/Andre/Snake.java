@@ -256,14 +256,6 @@ public class Snake {
 
 	}
 
-	protected boolean didHitWall(){
-		return hitWall;
-
-	}
-
-	protected boolean didEatTail(){
-		return ateTail;
-	}
 
 	public boolean isSnakeSegment(int kibbleX, int kibbleY) {
 		if (snakeSquares[kibbleX][kibbleY] == 0) {
@@ -318,17 +310,6 @@ public class Snake {
 		createStartSnake();
 
 	}
-
-	public boolean isGameOver() {
-		if (hitWall == true || ateTail == true){
-			SnakeGame.setGameStage(SnakeGame.GAME_OVER);
-			return true;
-			
-		}
-		return false;
-	}
-
-
 }
 
 

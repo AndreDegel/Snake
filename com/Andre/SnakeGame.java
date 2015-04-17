@@ -75,7 +75,8 @@ public class SnakeGame {
 	//Framework for this class adapted from the Java Swing Tutorial, FrameDemo and Custom Painting Demo. You should find them useful too.
 	//http://docs.oracle.com/javase/tutorial/displayCode.html?code=http://docs.oracle.com/javase/tutorial/uiswing/examples/components/FrameDemoProject/src/components/FrameDemo.java
 	//http://docs.oracle.com/javase/tutorial/uiswing/painting/step2.html
-	static JTextArea scoreViewer;
+
+
 	static JMenuBar menu = setJMenuBar();
 
 
@@ -88,13 +89,6 @@ public class SnakeGame {
 
 		snakeFrame.setJMenuBar(menu);
 
-
-
-		/*scoreViewer = new JTextArea("Score ==>" + score);
-		scoreViewer.setEnabled(false);
-		scoreViewer.setBackground(Color.BLACK);
-		scoreViewer.setLayout(new GridLayout(0, 1));
-		snakeFrame.add(scoreViewer);*/
 
 		snakeFrame.setSize(xPixelMaxDimension, yPixelMaxDimension);
 		snakeFrame.setUndecorated(true); //hide title bar
@@ -147,12 +141,6 @@ public class SnakeGame {
 		return gameStage;
 	}
 
-	public static boolean gameEnded() {
-		if (gameStage == GAME_OVER || gameStage == GAME_WON){
-			return true;
-		}
-		return false;
-	}
 
 	public static void setGameStage(int gameStage) {
 		SnakeGame.gameStage = gameStage;

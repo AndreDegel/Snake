@@ -7,9 +7,9 @@ package com.Andre;
 
 public class Score {
 
-	protected static int score;
-	protected static int highScore = 0;
-	protected static int increment;
+	private static int score;
+	private static int highScore = 0;
+	private static int increment;
 	
 	public Score(){
 		score = 0;
@@ -26,22 +26,7 @@ public class Score {
 		score = score + increment;
 		
 	}
-	
-	public int getScore(){
-		return score;
-	}
-	
-	//Checks if current score is greater than the current high score. 
-	//updates high score and returns true if so.
-	
-	public boolean gameOver(){
-		
-		if (score > highScore) {
-			highScore = score;
-			return true;
-		}
-		return false;
-	}
+
 
 	//These methods are useful for displaying score at the end of the game
 	
