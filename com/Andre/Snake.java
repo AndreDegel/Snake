@@ -5,10 +5,10 @@ import java.util.LinkedList;
 
 public class Snake {
 
-	final int DIRECTION_UP = 0;
-	final int DIRECTION_DOWN = 1;
-	final int DIRECTION_LEFT = 2;
-	final int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers. 
+	final static int DIRECTION_UP = 0; 		//FINDBUGS
+	final static int DIRECTION_DOWN = 1;	//FINDBUGS
+	final static int DIRECTION_LEFT = 2;	//FINDBUGS and the next one too
+	final static int DIRECTION_RIGHT = 3;  //These are completely arbitrary numbers.
 
 	private boolean hitWall = false;
 	private boolean ateTail = false;
@@ -274,14 +274,15 @@ public class Snake {
 	}
 
 	public String toString(){
-		String textsnake = "";
+		StringBuffer buf = new StringBuffer(); //FINDBUGS
 		//This looks the wrong way around. Actually need to do it this way or snake is drawn flipped 90 degrees. 
 		for (int y = 0 ; y < maxY ; y++) {
 			for (int x = 0 ; x < maxX ; x++){
-				textsnake = textsnake + snakeSquares[x][y];
+				buf.append(snakeSquares[x][y]);	//FINDBUGS
 			}
-			textsnake += "\n";
+			buf.append("\n");		//FINDBUGS
 		}
+		String textsnake = buf.toString();	//FINDBUGS
 		return textsnake;
 	}
 

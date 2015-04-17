@@ -7,9 +7,9 @@ package com.Andre;
 
 public class Score {
 
-	private static int score;
-	private static int highScore = 0;
-	private static int increment;
+	private static int score;			//FINDBUGS
+	private static int highScore = 0;	//FINDBUGS
+	private static int increment;		//FINDBUGS
 	
 	public Score(){
 		score = 0;
